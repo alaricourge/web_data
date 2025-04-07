@@ -1,0 +1,36 @@
+news=[]
+for ny_bb in wiki_articles:
+    new=remove_after_notes(ny_bb)
+    new=remove_before(new)
+    new=remove_wiki_number(new)
+    new=remove_edit(new)
+    news.append(new)
+
+wwentities=[]
+for i in range(len(news)):
+    article = nlp(news[i])
+    wwentities.append(article.ents)
+
+
+
+# coller les entités de chaque article
+wwentities2 = [item for sublist in wwentities for item in sublist]
+wwentities2=[x.text for x in wwentities2]
+print(len(wwentities2))
+wwentities2 = [x.lower() for x in wwentities2]
+wwentities2 = list(set(wwentities2))
+print(len(wwentities2))
+
+def stem_words(text):
+    word_tokens = word_tokenize(text)
+    stems = [stemmer.stem(word) for word in word_tokens]
+    return stems
+
+wwentities2 = [ remove_numbers(x) for x in wwentities2]
+wwentities2 = [stem_words(x) for x in wwentities2]
+wwentities2 = [" ".join(x) for x in wwentities2]
+wwentities2 = [ remove_punctuation(x) for x in wwentities2]
+wwentities2 = [ remove_whitespace(x) for x in wwentities2]
+
+wwentities2= list(set(wwentities2))
+print(len(wwentities2))
